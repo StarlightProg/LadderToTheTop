@@ -45,11 +45,11 @@ public class Second extends State {
 
     private Player player;
 
-    public Second(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword) {
+    public Second(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
-        player = new Player(x,y,AmountHp,gms);
+        player = new Player(x,y,AmountHp,gms,money);
 
         np = new StartNpc();
 
@@ -123,17 +123,17 @@ public class Second extends State {
         player.collidesright(rect112);
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
-            gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp()));
+            gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
             if (haveSwordd == true){
-                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true));
+                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
             }
             else {
-                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),false));
+                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),false,player.getMoney()));
             }
             System.out.println("created");
             k++;
@@ -255,7 +255,7 @@ public class Second extends State {
                 kolTouchUp++;
             }
 //            if (u==0) {
-//                gms.set(new Third(gms, 0, player.getPosition().y,player.getAmountHp()));
+//                gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp()));
 //                System.out.println("created");
 //                u++;
 //            }

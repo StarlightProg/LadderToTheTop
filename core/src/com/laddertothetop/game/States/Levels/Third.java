@@ -1,5 +1,7 @@
 package com.laddertothetop.game.States.Levels;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -22,6 +24,8 @@ public class Third extends State {
     Rectangle rect11,rect12,rect21,rect31,rect111,rect112,rect221;
     Rectangle nextloc,previousloc;
 
+    private MyInputProtector inputProtector;
+
     Player player;
 
     BtnJump btnj;
@@ -32,12 +36,13 @@ public class Third extends State {
     BtnTouch btnt;
 
     int k = 0;
+    int u =0;
 
     EnemyCherv enemyCherv;
 
     DrawTexture painter;
 
-    public Third(GameStateManager gms, float x, float y,int AmountHp) {
+    public Third(GameStateManager gms, float x, float y,int AmountHp,int money) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -73,10 +78,10 @@ public class Third extends State {
         painter.drawrectangleleft(rect12,tex1,0,0);
         painter.drawrectangleright(rect112,tex11,(tex2.getWidth()+tex3.getWidth())/2,0);
 
-        nextloc = new Rectangle(LadderToTheTop.WIDTH/2,rect11.getY()+rect11.getHeight(),-20,105);
+        nextloc = new Rectangle(LadderToTheTop.WIDTH/2,rect11.getY()+rect11.getHeight(),-1,105);
         previousloc = new Rectangle(0,rect11.getY()+rect11.getHeight(),1,105);
 
-        player = new Player(x,y,AmountHp,gms);
+        player = new Player(x,y,AmountHp,gms,money);
         enemyCherv = new EnemyCherv(rect31.getX()+(rect31.getWidth()/2)+150,rect31.getY()+(rect31.getHeight()/2),player);
     }
 
@@ -104,12 +109,13 @@ public class Third extends State {
         enemyCherv.collides(rect12,rect112);
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
+            gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
-            gms.set(new Second(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true));
+            gms.set(new Second(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
             System.out.println("created");
             k++;
             dispose();
@@ -122,6 +128,9 @@ public class Third extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+        inputProtector = new MyInputProtector(sb);
+        Gdx.input.setInputProcessor(inputProtector);
+
         sb.setProjectionMatrix(camera.combined);
 
         sb.begin();
@@ -151,4 +160,62 @@ public class Third extends State {
     public void dispose() {
 
     }
+
+    class MyInputProtector implements InputProcessor {
+        SpriteBatch sb;
+
+        public MyInputProtector(SpriteBatch sb){
+            this.sb = sb;
+        }
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+//            if (u==0) {
+//                gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp()));
+//                System.out.println("created");
+//                u++;
+//            }
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return false;
+        }
+    }
 }
+
+
+
+

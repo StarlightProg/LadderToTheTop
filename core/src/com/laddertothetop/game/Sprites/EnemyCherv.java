@@ -37,10 +37,12 @@ public class EnemyCherv {
 
     public void collides(Rectangle releft,Rectangle reright){
         if (releft.overlaps(rectleft)){
+          //  System.out.println("aaaaaaa");
             l=1;
             r=0;
         }
         if (reright.overlaps(rectright)){
+         //   System.out.println("bbbbbb");
             l=0;
             r=1;
         }

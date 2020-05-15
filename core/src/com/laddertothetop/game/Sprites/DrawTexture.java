@@ -16,7 +16,7 @@ public class DrawTexture {
         re.set(x+5,y,(tex.getWidth()/2)-10, 5);
     }
     public void drawrectanglebottom(Rectangle re,Texture tex,int x,int y){
-        re.set(x+5,(tex.getHeight()/2)-5,(tex.getWidth()/2)-10, 5);
+        re.set(x+5,y+(tex.getHeight()/2)-5,(tex.getWidth()/2)-10, 5);
     }
     public void drawrectangleright(Rectangle re,Texture tex,int x,int y){
         re.set(x,y+5,5,(tex.getHeight()/2)-10);
@@ -24,7 +24,5 @@ public class DrawTexture {
     public void drawrectangleleft(Rectangle re,Texture tex,int x,int y){
         re.set((tex.getWidth()/2)-5,y+5,5,(tex.getHeight()/2)-10);
     }
-    public void drawrectnpc(Rectangle re,Texture tex,int x,int y){
-        //re.set();
-    }
+
 }

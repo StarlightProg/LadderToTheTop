@@ -36,5 +36,17 @@ public class BtnAction {
             }
         return false;
     }
+    public boolean BuyApple( OrthographicCamera camera,int money){
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPos);
+            TouchRect = new Rectangle(touchPos.x, touchPos.y, 1, 1);
+            if (TouchRect.overlaps(rect)&&money>=10) {
+                //npc.action(camera,sb);
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

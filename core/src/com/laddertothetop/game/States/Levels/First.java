@@ -55,7 +55,7 @@ public class First extends State {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 //            if (k==0) {
-//                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp()));
+//                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true));
 //                System.out.println("created");
 //                k++;
 //            }
@@ -91,7 +91,7 @@ public class First extends State {
     CheckPoint firstcheckpoint;
     boolean haveSword;
 
-    public First(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword) {
+    public First(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -99,7 +99,7 @@ public class First extends State {
 
         this.haveSword = haveSword;
 //x 200 y 21
-        player = new Player(x,y,AmountHp,gms);
+        player = new Player(x,y,AmountHp,gms,money);
 
         t1 = new Texture("firstlevel.png");
 
@@ -137,10 +137,10 @@ public class First extends State {
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
             if (haveSword == true){
-                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true));
+                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
             }
             else {
-                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),false));
+                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),false,player.getMoney()));
             }
 
             System.out.println("created");
@@ -166,7 +166,7 @@ public class First extends State {
                    player.notHaveSword();
                    onetime++;
                }
-            player.draw(sb);
+               player.draw(sb);
            btnj.draw(sb);
            btnl.draw(sb);
            btnr.draw(sb);

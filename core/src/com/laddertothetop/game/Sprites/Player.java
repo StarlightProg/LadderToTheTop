@@ -45,6 +45,7 @@ public class Player {
     int kolvoHp=0;
     int widthplayerwithoutsword=33;
     int widthplayerwithsword=61;
+    int brg = 0;
 
     long starttime=0;
 
@@ -55,6 +56,7 @@ public class Player {
 
     private Rectangle rect,leftside,topside,bottomside,rightside;
     private Rectangle attackframe;
+    Rectangle lasttimeonground;
 
     Array<Texture> HpBar;
     GameStateManager gms;
@@ -68,7 +70,7 @@ public class Player {
     AnimationTakeDamagethread atdt;
     JumpThread jumpthread;
 
-    public Player(float x, float y, int AmountHp,GameStateManager gms){
+    public Player(float x, float y, int AmountHp,GameStateManager gms,int money){
         this.gms=gms;
 
         position = new Vector3(x,y,0);
@@ -82,6 +84,7 @@ public class Player {
         btnr = new BtnRightMove();
         btnat = new BtnAttack();
 
+        this.money = money;
 
         moneytex = new Texture("coin2.png");
         zero = new Texture("0.png");
@@ -125,7 +128,9 @@ public class Player {
 
         rect = new Rectangle(x,y,player.getWidth()/2,player.getHeight()/2);
 
-        attackframe = new Rectangle(-100,-100,61/2,93/2);
+        lasttimeonground = new Rectangle();
+
+        attackframe = new Rectangle(-200,-200,100/2,100/2);
 
         leftside = new Rectangle(x,y+10,5,player.getHeight()/2-20);
         rightside = new Rectangle(x+player.getWidth()/2,y+10,-5,player.getHeight()/2-20);
@@ -166,6 +171,8 @@ public class Player {
         topside.setPosition(position.x, position.y);
         bottomside.setPosition(position.x, position.y);
 
+       // System.out.println(position.y);
+
         gorightanim.update(dt);
         goleftanim.update(dt);
 
@@ -182,6 +189,7 @@ public class Player {
             gravity = -10;
             velosity.y = -30;
             position.y = re.y + re.height;
+            lasttimeonground.set(position.x,position.y,1,1);
             this.refresh();
             jumpactive = false;
         }
@@ -222,6 +230,7 @@ public class Player {
     public void refresh(){
         starttime = 0;
     }
+
     public void attack(final SpriteBatch sb) {
         //System.out.println("fewfewfef");
         if (onetimeattack == true&&jumpactive==false) {
@@ -229,6 +238,15 @@ public class Player {
             aat = new AnimationAttackThread();
             aat.start();
         }
+    }
+
+    public void falled(){
+        position.x = lasttimeonground.getX();
+        position.y = lasttimeonground.getY();
+        tdt = new TakeDamageThread();
+        tdt.start();
+        atdt = new AnimationTakeDamagethread();
+        atdt.start();
     }
 
     public void draw(final SpriteBatch sb) {
@@ -306,6 +324,14 @@ public class Player {
         }
     }
 
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
     public void goleft(boolean isTouched){
         if (isTouched==true&&attack==false) {
             position.x-=2;
@@ -373,8 +399,13 @@ public class Player {
 
 
     public boolean EnemyDamage(Rectangle rect, int money){
-        if (rect.overlaps(attackframe)){
-            this.money= money;
+        if (rect.overlaps(attackframe)) {
+            if (brg == 0){
+                System.out.println("klaa");
+            this.setMoney(this.getMoney() + money);
+            }
+            brg = 1;
+
             return true;
         }
         else {

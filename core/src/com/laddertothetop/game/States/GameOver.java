@@ -37,8 +37,8 @@ public class GameOver extends State {
         continuees =new Texture("continueS.png");
         exits = new Texture("exitS.png");
 
-        continueer = new Rectangle(BtnX,BtnY-35,WidthBtn,HeightBtn);
-        exitr = new Rectangle(BtnX,BtnY-115,WidthBtn,HeightBtn);
+        continueer = new Rectangle(BtnX,BtnY-60,WidthBtn,HeightBtn);
+        exitr = new Rectangle(BtnX,BtnY-140,WidthBtn,HeightBtn);
 
         touchPos = new Vector3();
     }
@@ -115,7 +115,7 @@ public class GameOver extends State {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if ((Touchrect.overlaps(continueer))&&(k==0)) {
-                gms.set(new First(gms,200,21,4,false));
+                gms.set(new First(gms,200,21,4,false,0));
                 k++;
             }
             if ((Touchrect.overlaps(exitr))&&(k==0)) {
