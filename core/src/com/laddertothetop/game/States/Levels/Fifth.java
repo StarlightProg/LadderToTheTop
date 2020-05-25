@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
 import com.laddertothetop.game.Sprites.BtnAction;
 import com.laddertothetop.game.Sprites.BtnAttack;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -33,10 +34,12 @@ public class Fifth extends State {
     BtnRightMove btnr;
     BtnAction btna;
     BtnAttack btnat;
+    BtnDash btnDash;
+    boolean BtnDash = false;
 
     int k=0;
 
-    public Fifth(GameStateManager gms, float x, float y,int AmountHp,int money) {
+    public Fifth(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -62,6 +65,9 @@ public class Fifth extends State {
         rect112 = new Rectangle();
         rect11= new Rectangle();
         rectperec1 = new Rectangle();
+        btnDash = new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         shoploc = new Rectangle(0,50,1,500);
         bossloc = new Rectangle(LadderToTheTop.WIDTH/2,50,-1,500);
@@ -91,18 +97,19 @@ public class Fifth extends State {
 
 
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
-            gms.set(new Fourth(gms, player.getPosition().x, (LadderToTheTop.HEIGHT/2) - 70,player.getAmountHp(),player.getMoney()));
+            gms.set(new Fourth(gms, player.getPosition().x, (LadderToTheTop.HEIGHT/2) - 70,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(shoploc)){
-            gms.set(new Shop(gms, (LadderToTheTop.WIDTH/2)- 70 , player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new Shop(gms, (LadderToTheTop.WIDTH/2)- 70 , player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("create");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(bossloc)){
+            gms.set(new Boss(gms, 100, player.getPosition().y,player.getAmountHp(),player.getMoney()));
             System.out.println("create");
             k++;
             dispose();
@@ -134,6 +141,9 @@ public class Fifth extends State {
         //   sb.draw(spikes,rect3.getX()+rect3.getWidth(),rect3.getY()+(rect3.getHeight()/2)-100,10,400);
 
         player.draw(sb);
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
         btnj.draw(sb);
         btnl.draw(sb);
         btnr.draw(sb);

@@ -10,6 +10,7 @@ public class BtnTouch {
     BtnLeftMove btnl;
     BtnRightMove btnr;
     BtnJump btnj;
+    BtnDash btnddash;
     int i = 0 ;
     int j = 0 ;
     Rectangle TouchRect;
@@ -21,6 +22,7 @@ public class BtnTouch {
         btnl = new BtnLeftMove();
         btnr = new BtnRightMove();
         btnj = new BtnJump();
+        btnddash = new BtnDash();
 
     }
 
@@ -37,6 +39,7 @@ public class BtnTouch {
                 }
                 btnr.touch(player, i, TouchRect,btnj.getRect());
                 btnl.touch(player, i, TouchRect,btnj.getRect());
+                btnddash.touch(player, i, TouchRect,btnj.getRect());
 
             }
             else {

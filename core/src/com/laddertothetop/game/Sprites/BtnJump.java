@@ -15,7 +15,7 @@ public class BtnJump {
     Rectangle rect;
 int j=0;
 int i =0;
-int b=1;
+
 boolean Activated;
 
 
@@ -44,7 +44,7 @@ boolean Activated;
 
     public void touchjump(Player player,int i ,Rectangle TouchRect){
       //  System.out.println(Activated);
-            if (TouchRect.overlaps(rect) && b==1) {
+            if (TouchRect.overlaps(rect)) {
                     player.jump();
             }
 

@@ -22,6 +22,9 @@ public class Player {
     BtnRightMove btnr;
     BtnAttack btnat;
 
+
+    boolean onetimedamage = true;
+
     private static int gravity=0;
     private Vector3 position,velosity;
 
@@ -36,6 +39,7 @@ public class Player {
     boolean onetimeattack = true;
     boolean da = false,pizdaright=false,pizdaleft=false;
     boolean jumpactive= false;
+
 
     int AmountHp;
     int SideOfSword=0;
@@ -68,7 +72,6 @@ public class Player {
     AnimationAttackThread aat;
     TakeDamageThread tdt;
     AnimationTakeDamagethread atdt;
-    JumpThread jumpthread;
 
     public Player(float x, float y, int AmountHp,GameStateManager gms,int money){
         this.gms=gms;
@@ -220,11 +223,20 @@ public class Player {
             starttime = System.nanoTime();
         }
    //     System.out.println("d12");
-        if (attack==false && System.nanoTime() - starttime < 1000000)  {
+        if (attack==false && System.nanoTime() - starttime < 10000000)  {
+            //          position.x +=5;
             jumpactive = true;
             velosity.y = 600;
      //       System.out.println(velosity.y);
             gravity = -15;
+        }
+    }
+    public void dash(){
+        if (jumpactive == true&&SideOfSword ==0){
+            position.x+=3;
+        }
+        if (jumpactive == true&&SideOfSword ==1){
+            position.x-=3;
         }
     }
     public void refresh(){
@@ -360,7 +372,6 @@ public class Player {
             isGoRight=0;
          }
     }
-
     public void TakeDamage(Rectangle rectall){
         if (rectall.overlaps(rect)&&startThread==1){
             tdt = new TakeDamageThread();
@@ -401,7 +412,7 @@ public class Player {
     public boolean EnemyDamage(Rectangle rect, int money){
         if (rect.overlaps(attackframe)) {
             if (brg == 0){
-                System.out.println("klaa");
+                System.out.println("klaaa");
             this.setMoney(this.getMoney() + money);
             }
             brg = 1;
@@ -414,17 +425,27 @@ public class Player {
 
     }
 
-    class JumpThread extends Thread{
-        @Override
-        public void run(){
-            System.out.println("d12");
-            if (attack==false) {
-                velosity.y = 600;
-                System.out.println(velosity.y);
-                gravity = -15;
+    public int EnemyDamageBoss(Rectangle rect,int hp){
+        if (rect.overlaps(attackframe)&&onetimedamage == true) {
+            System.out.println("11");
+            hp--;
+            onetimedamage = false;
+            if(hp!=-1){
+                position.x=100;
             }
+            if(hp==-1){
+                this.setMoney(this.getMoney() + 50);
+            }
+            return hp;
         }
+        return hp;
     }
+
+    public Rectangle getAttackFrame(){
+        return attackframe;
+    }
+
+
 
     class TakeDamageThread extends Thread{
         @Override
@@ -471,10 +492,7 @@ public class Player {
     class AnimationAttackThread extends Thread{
         @Override
         public void run(){
-
-
                 try {
-
                     attack = true;
                     btnj.Disabled();
                     btnl.Disabled();
@@ -509,6 +527,7 @@ public class Player {
                     btnat.Activated();
                     attack = false;
                     onetimeattack = true;
+                    onetimedamage = true;
                     attackcurrentFrameright.setRegion(0, 0, 177, 93);
                     attackcurrentFrameleft.setRegion(0, 0, 177, 93);
                 } catch (InterruptedException e) {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
 import com.laddertothetop.game.Sprites.BtnAction;
 import com.laddertothetop.game.Sprites.BtnAttack;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -42,14 +43,20 @@ public class Second extends State {
     DrawTexture painter;
     StartNpc np;
     boolean haveSwordd;
+    BtnDash btnDash;
+    boolean BtnDash = false;
 
     private Player player;
 
-    public Second(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money) {
+    public Second(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
         player = new Player(x,y,AmountHp,gms,money);
+
+        btnDash = new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         np = new StartNpc();
 
@@ -123,17 +130,17 @@ public class Second extends State {
         player.collidesright(rect112);
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
-            gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
             if (haveSwordd == true){
-                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
+                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney(),BtnDash));
             }
             else {
-                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),false,player.getMoney()));
+                gms.set(new First(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),false,player.getMoney(),BtnDash));
             }
             System.out.println("created");
             k++;
@@ -164,6 +171,9 @@ public class Second extends State {
         sb.draw(npc,(tex3.getWidth()/3)-npc.getWidth()/2,tex3.getHeight()/2);
 
         player.draw(sb);
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
         btnj.draw(sb);
         btnl.draw(sb);
         btnr.draw(sb);
@@ -255,7 +265,7 @@ public class Second extends State {
                 kolTouchUp++;
             }
 //            if (u==0) {
-//                gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp()));
+//                gms.set(new Third(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
 //                System.out.println("created");
 //                u++;
 //            }

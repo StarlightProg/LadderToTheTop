@@ -1,11 +1,14 @@
 package com.laddertothetop.game.States.Levels;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
 import com.laddertothetop.game.Sprites.BtnAction;
 import com.laddertothetop.game.Sprites.BtnAttack;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -33,13 +36,17 @@ public class Fourth extends State {
     BtnRightMove btnr;
     BtnAction btna;
     BtnAttack btnat;
+    BtnDash btnDash;
+    boolean BtnDash = false;
+    private MyInputProtector inputProtector;
 
     EnemyCherv enemyCherv;
     Rectangle chervleft,chervright;
 
     int k = 0;
+    int u=0;
 
-    public Fourth(GameStateManager gms, float x, float y,int AmountHp,int money) {
+    public Fourth(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -51,6 +58,9 @@ public class Fourth extends State {
         btna = new BtnAction();
         btnat = new BtnAttack();
         btnt = new BtnTouch();
+        btnDash  =new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         bg = new Texture("background.png");
         tex1 = new Texture("1.png");
@@ -131,19 +141,19 @@ public class Fourth extends State {
 
 
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
-            gms.set(new Third(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new Third(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(nextlocup)){
-            gms.set(new Fifth(gms, player.getPosition().x, 30,player.getAmountHp(),player.getMoney()));
+            gms.set(new Fifth(gms, player.getPosition().x, 30,player.getAmountHp(),player.getMoney(), BtnDash));
             System.out.println("create");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(nextlocdown)){
-            gms.set(new abyss(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new abyss(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("create");
             k++;
             dispose();
@@ -156,6 +166,9 @@ public class Fourth extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+        inputProtector = new MyInputProtector(sb);
+        Gdx.input.setInputProcessor(inputProtector);
+
         sb.setProjectionMatrix(camera.combined);
 
         sb.begin();
@@ -184,6 +197,10 @@ public class Fourth extends State {
         btnr.draw(sb);
         btnat.draw(sb);
 
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
+
 
         btnat.touch(player,camera,sb);
 
@@ -196,4 +213,59 @@ public class Fourth extends State {
     public void dispose() {
 
     }
+
+    class MyInputProtector implements InputProcessor {
+        SpriteBatch sb;
+
+        public MyInputProtector(SpriteBatch sb){
+            this.sb = sb;
+        }
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+//            if (u==0) {
+//                gms.set(new Fifth(gms, 400, 200,player.getAmountHp(),player.getMoney(),false));
+//                System.out.println("created");
+//                u++;
+//            }
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            return false;
+        }
+    }
 }
+

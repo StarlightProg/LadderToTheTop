@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
 import com.laddertothetop.game.Sprites.BtnAction;
 import com.laddertothetop.game.Sprites.BtnAttack;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -34,6 +35,8 @@ public class Third extends State {
     BtnAction btna;
     BtnAttack btnat;
     BtnTouch btnt;
+    BtnDash btnDash;
+    boolean BtnDash = false;
 
     int k = 0;
     int u =0;
@@ -42,9 +45,13 @@ public class Third extends State {
 
     DrawTexture painter;
 
-    public Third(GameStateManager gms, float x, float y,int AmountHp,int money) {
+    public Third(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
+
+        btnDash = new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         painter = new DrawTexture();
 
@@ -109,13 +116,13 @@ public class Third extends State {
         enemyCherv.collides(rect12,rect112);
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
-            gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney(), BtnDash));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
-            gms.set(new Second(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
+            gms.set(new Second(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),true,player.getMoney(),BtnDash));
             System.out.println("created");
             k++;
             dispose();
@@ -145,6 +152,9 @@ public class Third extends State {
 
             enemyCherv.draw(sb);
             player.draw(sb);
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
             btnj.draw(sb);
             btnl.draw(sb);
             btnr.draw(sb);
@@ -192,7 +202,7 @@ public class Third extends State {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 //            if (u==0) {
-//                gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp()));
+//                gms.set(new Fourth(gms, 10, player.getPosition().y,player.getAmountHp(),player.getMoney(),false));
 //                System.out.println("created");
 //                u++;
 //            }

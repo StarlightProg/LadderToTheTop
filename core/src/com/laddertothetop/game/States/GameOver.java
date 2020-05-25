@@ -115,7 +115,7 @@ public class GameOver extends State {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if ((Touchrect.overlaps(continueer))&&(k==0)) {
-                gms.set(new First(gms,200,21,4,false,0));
+                gms.set(new First(gms,200,21,4,false,0,false));
                 k++;
             }
             if ((Touchrect.overlaps(exitr))&&(k==0)) {

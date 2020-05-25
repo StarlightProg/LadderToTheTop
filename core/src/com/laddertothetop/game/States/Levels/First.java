@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -55,7 +56,7 @@ public class First extends State {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 //            if (k==0) {
-//                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true));
+//                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
 //                System.out.println("created");
 //                k++;
 //            }
@@ -90,8 +91,10 @@ public class First extends State {
     BtnTouch btnt;
     CheckPoint firstcheckpoint;
     boolean haveSword;
+    BtnDash btnDash;
+    boolean BtnDash = false;
 
-    public First(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money) {
+    public First(GameStateManager gms, float x, float y, int AmountHp,boolean haveSword,int money, boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -107,6 +110,9 @@ public class First extends State {
         btnl = new BtnLeftMove();
         btnr = new BtnRightMove();
         btnt = new BtnTouch();
+        btnDash = new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         r1 = new Rectangle(0,0,60,LadderToTheTop.HEIGHT/2);
         r2 = new Rectangle(0,0,LadderToTheTop.WIDTH/2,(float)72.5);
@@ -137,10 +143,10 @@ public class First extends State {
 
         if (k==0&&player.getPlayerRect().overlaps(nextloc)) {
             if (haveSword == true){
-                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true,player.getMoney()));
+                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),true,player.getMoney(),BtnDash));
             }
             else {
-                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),false,player.getMoney()));
+                gms.set(new Second(gms, 10, player.getPosition().y,player.getAmountHp(),false,player.getMoney(),BtnDash));
             }
 
             System.out.println("created");
@@ -167,6 +173,9 @@ public class First extends State {
                    onetime++;
                }
                player.draw(sb);
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
            btnj.draw(sb);
            btnl.draw(sb);
            btnr.draw(sb);

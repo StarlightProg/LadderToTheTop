@@ -16,8 +16,7 @@ import com.laddertothetop.game.Sprites.Player;
 import com.laddertothetop.game.States.GameStateManager;
 import com.laddertothetop.game.States.State;
 
-
-public class Shop extends State {
+public class SecretRoom extends State {
 
     Texture bg,tex1,tex11,tex2,apple,applecost;
 
@@ -32,13 +31,13 @@ public class Shop extends State {
     BtnRightMove btnr;
     BtnAction btna;
     BtnAttack btnat;
-    BtnDash btnDash;
+    com.laddertothetop.game.Sprites.BtnDash btnDash;
     boolean BtnDash = false;
 
     int k=0;
     int i=0;
 
-    public Shop(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
+    public SecretRoom(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -62,7 +61,7 @@ public class Shop extends State {
         apple = new Texture("apple.png");
         applecost = new Texture("applecost.png");
         applerect = new Rectangle(80,tex1.getHeight()/2,230,300);
-        previousrect = new Rectangle(LadderToTheTop.WIDTH/2,50,-1,300);
+        previousrect = new Rectangle(0,50,1,300);
 
         rect1 = new Rectangle();
         rect2 = new Rectangle();
@@ -72,19 +71,13 @@ public class Shop extends State {
         player = new Player(x,y,AmountHp,gms,money);
 
         painter.drawrectanglebottom(rect1,tex1,0,0);
-        painter.drawrectangleleft(rect2,tex2,0,0);
+        painter.drawrectangleright(rect2,tex2,(LadderToTheTop.WIDTH/2)-tex2.getWidth()/2,0);
     }
 
     @Override
     protected void handleInput() {
         btnt.touch(player,camera);
-        if (i==1) {
-            btnt.isActiveJump(true);
-            k=0;
-        }
-        else {
-            btnt.isActiveJump(false);
-        }}
+    }
 
     @Override
     public void update(float dt) {
@@ -92,7 +85,7 @@ public class Shop extends State {
         player.collidesleft(rect2);
 
         if (k==0&&player.getPlayerRect().overlaps(previousrect)){
-            gms.set(new Fifth(gms, 40, player.getPosition().y,player.getAmountHp(),player.getMoney(), BtnDash));
+            gms.set(new abyss(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),player.getMoney(), BtnDash));
             System.out.println("created");
             k++;
             dispose();
@@ -110,14 +103,10 @@ public class Shop extends State {
 
         sb.draw(bg,0,0,bg.getWidth()/2,bg.getHeight()/2);
 
-        sb.draw(apple,150,tex1.getHeight()/2,apple.getWidth(),apple.getHeight());
-
         painter.drawtexture(sb,tex1,0,0);
         painter.drawtexture(sb,tex11,0,(LadderToTheTop.HEIGHT/2)-tex11.getHeight()/2);
-        painter.drawtexture(sb,tex2,0,0 );
-        sb.draw(applecost,170,(tex1.getHeight()/2)-20,applecost.getWidth()/2,applecost.getHeight()/2);
-
-
+        painter.drawtexture(sb,tex2,(LadderToTheTop.WIDTH/2)-tex2.getWidth()/2
+                ,0 );
         //   sb.draw(spikes,rect3.getX()+rect3.getWidth(),rect3.getY()+(rect3.getHeight()/2)-100,10,400);
 
         player.draw(sb);
@@ -129,24 +118,9 @@ public class Shop extends State {
             btnDash.draw(sb);
         }
 
-        if (player.getPlayerRect().overlaps(applerect)){
-            btna.draw(sb);
-            if (btna.BuyApple(camera,player.getMoney())&&player.getAmountHp()<4){
-                player.setAmountHp(player.getAmountHp()+1);
-                if ((player.getMoney()-10)>=0) {
-                    player.setMoney(player.getMoney() - 10);
-                }
-            }
-            i=0;
-        }
-        else {
-            i=1;
-        }
-
         btnat.touch(player,camera,sb);
 
         sb.end();
-
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.laddertothetop.game.LadderToTheTop;
 import com.laddertothetop.game.Sprites.BtnAction;
 import com.laddertothetop.game.Sprites.BtnAttack;
+import com.laddertothetop.game.Sprites.BtnDash;
 import com.laddertothetop.game.Sprites.BtnJump;
 import com.laddertothetop.game.Sprites.BtnLeftMove;
 import com.laddertothetop.game.Sprites.BtnRightMove;
@@ -33,11 +34,13 @@ public class abyss extends State {
     BtnRightMove btnr;
     BtnAction btna;
     BtnAttack btnat;
+    com.laddertothetop.game.Sprites.BtnDash btnDash;
+    boolean BtnDash = false;
 
 
     int k = 0;
 
-    public abyss(GameStateManager gms, float x, float y,int AmountHp,int money) {
+    public abyss(GameStateManager gms, float x, float y,int AmountHp,int money,boolean BtnDash) {
         super(gms);
         camera.setToOrtho(false, LadderToTheTop.WIDTH/2,LadderToTheTop.HEIGHT/2);
 
@@ -49,6 +52,10 @@ public class abyss extends State {
         btna = new BtnAction();
         btnat = new BtnAttack();
         btnt = new BtnTouch();
+
+        btnDash = new BtnDash();
+
+        this.BtnDash = BtnDash;
 
         bg = new Texture("background.png");
         tex1 = new Texture("3right.png");
@@ -64,14 +71,15 @@ public class abyss extends State {
         rectperec1 = new Rectangle();
 
         previousloc = new Rectangle(0,0,1,720);
+        nextloc = new Rectangle((LadderToTheTop.WIDTH/2),50,-1,500);
 
         rectspikes = new Rectangle(0,0,1280,45);
 
         btnt = new BtnTouch();
 
-        player = new Player(x,y,AmountHp,gms,money);
 
-        nextloc = new Rectangle(LadderToTheTop.WIDTH/2,50,-1,500);
+
+        player = new Player(x,y,AmountHp,gms,money);
 
         painter.drawrectanglebottom(rect11,tex1,0,0);
         painter.drawrectanglebottom(rect4,tex2,(LadderToTheTop.WIDTH/2)-tex2.getWidth()/2,0);
@@ -98,12 +106,13 @@ public class abyss extends State {
 
 
         if (k==0&&player.getPlayerRect().overlaps(previousloc)){
-            gms.set(new Fourth(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),player.getMoney()));
+            gms.set(new Fourth(gms, (LadderToTheTop.WIDTH/2)-70, player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("created");
             k++;
             dispose();
         }
         if (k==0&&player.getPlayerRect().overlaps(nextloc)){
+            gms.set(new SecretRoom(gms, 70, player.getPosition().y,player.getAmountHp(),player.getMoney(),BtnDash));
             System.out.println("create");
             k++;
             dispose();
@@ -133,6 +142,9 @@ public class abyss extends State {
 
         player.draw(sb);
         btnj.draw(sb);
+        if (BtnDash==true){
+            btnDash.draw(sb);
+        }
         btnl.draw(sb);
         btnr.draw(sb);
         btnat.draw(sb);
