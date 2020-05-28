@@ -37,7 +37,7 @@ public class Player {
     boolean haveSword=true;
     boolean attack = false;
     boolean onetimeattack = true;
-    boolean da = false,pizdaright=false,pizdaleft=false;
+    boolean da = false,pright=false,pleft=false;
     boolean jumpactive= false;
 
 
@@ -281,22 +281,22 @@ public class Player {
             // System.out.println("1111");
             sb.draw(attackcurrentFrameright, position.x, position.y, attackcurrentFrameright.getRegionWidth() / 2, attackcurrentFrameright.getRegionHeight() / 2);
            // System.out.println(pizdaright);
-            if (pizdaright == true) {
+            if (pright == true) {
               //  System.out.println(heartanimcurrentFrame.getRegionX());
                 attackcurrentFrameright.setRegionX(attackcurrentFrameright.getRegionX() + 177);
                 attackcurrentFrameright.setRegionWidth(177);
-                pizdaright = false;
+                pright = false;
             }
         }
 
         if (attack == true&&SideOfSword==1&&jumpactive==false) {
             sb.draw(attackcurrentFrameleft, position.x-widthplayerwithoutsword+6, position.y, attackcurrentFrameleft.getRegionWidth() / 2, attackcurrentFrameleft.getRegionHeight() / 2);
             // System.out.println(pizdaright);
-            if (pizdaright == true) {
+            if (pright == true) {
                // System.out.println(heartanimcurrentFrame.getRegionX());
                 attackcurrentFrameleft.setRegionX(attackcurrentFrameleft.getRegionX() + 177);
                 attackcurrentFrameleft.setRegionWidth(177);
-                pizdaright = false;
+                pright = false;
             }
         }
 
@@ -498,13 +498,13 @@ public class Player {
                     btnl.Disabled();
                     btnr.Disabled();
                     btnat.Disabled();
-                    pizdaright = true;
+                    pright = true;
                     Thread.sleep(150);
-                    pizdaright = true;
+                    pright = true;
                     Thread.sleep(150);
-                    pizdaright = true;
+                    pright = true;
                     Thread.sleep(150);
-                    pizdaright = true;
+                    pright = true;
                     if (SideOfSword == 0) {
                         attackframe.setX(position.x + widthplayerwithsword);
                     }
@@ -513,13 +513,13 @@ public class Player {
                     }
                     attackframe.setY(position.y);
                     Thread.sleep(200);
-                    pizdaright = true;
+                    pright = true;
                     attackframe.setX(-100);
                     attackframe.setY(-100);
                     Thread.sleep(150);
-                    pizdaright = true;
+                    pright = true;
                     Thread.sleep(150);
-                    pizdaright = true;
+                    pright = true;
                     Thread.sleep(150);
                     btnj.Activated();
                     btnl.Activated();

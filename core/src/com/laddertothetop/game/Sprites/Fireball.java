@@ -7,11 +7,6 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Fireball {
 
-    int l=0; //if overlaps left
-    int r=1; //if overlaps right
-    int startThread=1;
-    int money = 5;
-
     Texture tex;
     Rectangle rectleft,rectright,rectall;
     Vector3 position,velosity;
